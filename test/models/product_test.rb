@@ -8,6 +8,7 @@ class ProductTest < ActiveSupport::TestCase
 
   test 'product attributes must not be empty' do
     product = Product.new
+
     assert product.invalid?
     assert product.errors[:title].any?
     assert product.errors[:description].any?
@@ -66,7 +67,7 @@ class ProductTest < ActiveSupport::TestCase
 
   test 'product is not valid without a unique title' do
     product = Product.new(
-      title: products(:ruby).title,
+      title: products(:macbook).title,
       description: 'yyy',
       price: 1,
       image_url: 'sample_product.png'

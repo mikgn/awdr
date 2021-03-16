@@ -1,5 +1,5 @@
 Product.create!(
-  title: 'Macbook Prto M1',
+  title: 'Macbook Pro M1',
   description: %(<p> \
     Apple M1 chip with 8‑core CPU, 8‑core GPU, and 16‑core Neural Engine \
     8GB unified memory \

@@ -12,11 +12,16 @@ two:
   image_url: lorem.jpg
   price: 9.99
 
-ruby:
-  title: Programming Ruby 1.9
+macbook:
+  title: Macbook Pro M1
   description: >
-               Ruby is the fastest growing and most exciting dynamic
-               language out there. If you need to get working programs
-               delivered fast, you should add Ruby to your toolbox.
-  image_url: ruby.jpg
+               Apple M1 chip with 8‑core CPU, 8‑core GPU,
+               and 16‑core Neural Engine
+               8GB unified memory
+               256GB SSD storage
+               13-inch Retina display with True Tone
+               Backlit Magic Keyboard - US English
+               Touch Bar and Touch ID
+               Two Thunderbolt USB 4 ports
+  image_url: macbbok.jpg
   price: 49.50
