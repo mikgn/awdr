@@ -42,10 +42,14 @@ class ProductsController < ApplicationController
   end
 
   def destroy
-    @product.destroy
     respond_to do |format|
-      format.html { redirect_to products_url, notice: "Product was successfully destroyed." }
-      format.json { head :no_content }
+      if @product.destroy
+        format.html { redirect_to products_url, notice: "Product was successfully destroyed." }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to products_url, notice: "This product is in the shopping cart." }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+      end
     end
   end
 
