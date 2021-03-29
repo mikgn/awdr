@@ -6,8 +6,8 @@ one:
   image_url: lorem.jpg
   price: 9.99
 
-two:
-  title: MyString
+ipad:
+  title: 'Ipad Pro'
   description: MyText
   image_url: lorem.jpg
   price: 9.99

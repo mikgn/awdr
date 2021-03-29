@@ -9,6 +9,7 @@ gem 'rails', '~> 6.1.3'
 # pg
 gem 'pg'
 
+gem 'awesome_print', require: 'ap'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 # Use SCSS for stylesheets
