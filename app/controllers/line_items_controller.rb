@@ -2,6 +2,8 @@ class LineItemsController < ApplicationController
   include CurrentCart
   before_action :set_cart, only: %i[create]
   before_action :set_line_item, only: %i[show edit update destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :invalid_line_item
+
 
   def index
     @line_items = LineItem.all
@@ -47,12 +49,20 @@ class LineItemsController < ApplicationController
   def destroy
     @line_item.destroy
     respond_to do |format|
-      format.html { redirect_to line_items_url, notice: "Line item was successfully destroyed." }
+      format.html {
+        redirect_to cart_url(@line_item.cart),
+        notice: "Line item was successfully destroyed."
+      }
       format.json { head :no_content }
     end
   end
 
   private
+
+  def invalid_line_item
+    logger.error "Attempt to access invalid line_item ##{params[:id]}"
+    redirect_to store_index_url, notice: 'Invalid line item'
+  end
 
   def set_line_item
     @line_item = LineItem.find(params[:id])

@@ -1,6 +1,5 @@
 class CartsController < ApplicationController
   before_action :set_cart, only: %i[show edit update destroy]
-  rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
 
   def index
     @carts = Cart.all
@@ -54,12 +53,18 @@ class CartsController < ApplicationController
   private
 
   def invalid_cart
+    # TODO
+    # think about status: :unauthorized
     logger.error "Attempt to access invalid cart ##{params[:id]}"
     redirect_to store_index_url, notice: 'Invalid cart'
   end
 
   def set_cart
-    @cart = Cart.find(params[:id])
+    if session[:cart_id] == params[:id].to_i
+      @cart = Cart.find(params[:id])
+    else
+      invalid_cart
+    end
   end
 
   def cart_params

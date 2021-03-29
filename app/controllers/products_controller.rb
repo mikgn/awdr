@@ -1,5 +1,6 @@
 class ProductsController < ApplicationController
   before_action :set_product, only: %i[ show edit update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :invalid_product
 
   def index
     @products = Product.all
@@ -54,6 +55,11 @@ class ProductsController < ApplicationController
   end
 
   private
+
+  def invalid_product
+    logger.error "Attempt to access invalid product ##{params[:id]}"
+    redirect_to store_index_url, notice: 'Invalid product'
+  end
 
   def set_product
     @product = Product.find(params[:id])
