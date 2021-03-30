@@ -6,4 +6,8 @@ module ApplicationHelper
       'sample_product.png'
     end
   end
+
+  def render_if(condition, record)
+    render record if condition
+  end
 end

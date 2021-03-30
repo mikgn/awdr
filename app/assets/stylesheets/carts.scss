@@ -1,19 +1,19 @@
 .carts {
   table {
-  border-collapse: collapse;
+    border-collapse: collapse;
   }
   td {
-  padding: 0.5em;
+    padding: 0.5em;
   }
   td.quantity {
-  white-space: nowrap;
+    white-space: nowrap;
   }
   td.quantity::after {
-  content: " ×";
+    content: " ×";
   }
   td.price {
-  font-weight: bold;
-  text-align: right;
+    font-weight: bold;
+    text-align: right;
   }
   tfoot {
     th, th.price {
@@ -28,14 +28,14 @@
     }
   }
   input[type="submit"] {
-  background-color: #B22222;
-  border-radius: 0.354em;
-  border: solid thin #fff;
-  color: white;
-  font-size: 1em;
-  padding: 0.354em 1em;
+    background-color: #B22222;
+    border-radius: 0.354em;
+    border: solid thin #fff;
+    color: white;
+    font-size: 1em;
+    padding: 0.354em 1em;
   }
   input[type="submit"]:hover {
-  background-color: #8B0000;
+    background-color: #8B0000;
   }
 }
