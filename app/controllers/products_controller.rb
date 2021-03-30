@@ -1,9 +1,9 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :set_product, only: %i[show edit update destroy]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_product
 
   def index
-    @products = Product.all
+    @products = Product.all.order(:title)
   end
 
   def show
@@ -35,6 +35,10 @@ class ProductsController < ApplicationController
       if @product.update(product_params)
         format.html { redirect_to @product, notice: "Product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
+
+        @products = Product.all.order(:title)
+        ActionCable.server.broadcast 'products',
+          html: render_to_string('store/index', layout: false)
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
