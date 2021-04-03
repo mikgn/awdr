@@ -15,5 +15,12 @@ consumer.subscriptions.create("ProductsChannel", {
     if (storeElement) {
       storeElement.innerHTML = data.html
     }
+
+    const productId = data.product_id
+    const productBlock = document.getElementById("product-" + productId)
+
+    if (productBlock) {
+      productBlock.setAttribute("class", "line-item-highlight");
+    }
   }
 });

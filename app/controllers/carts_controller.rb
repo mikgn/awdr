@@ -1,5 +1,5 @@
 class CartsController < ApplicationController
-  before_action :set_cart, only: %i[show edit update destroy]
+  before_action :set_current_cart, only: %i[show edit update destroy]
 
   def index
     @carts = Cart.all
@@ -45,21 +45,22 @@ class CartsController < ApplicationController
     @cart.destroy if @cart.id == session[:cart_id]
     session[:cart_id] = nil
     respond_to do |format|
-      format.html { redirect_to store_index_url, notice: 'Your cart is currently empty' }
+      format.html { redirect_to store_index_url }
       format.json { head :no_content }
+      # TO DO
+      # clean session without page reloading
+      # format.js
     end
   end
 
   private
 
   def invalid_cart
-    # TODO
-    # think about status: :unauthorized
     logger.error "Attempt to access invalid cart ##{params[:id]}"
     redirect_to store_index_url, notice: 'Invalid cart'
   end
 
-  def set_cart
+  def set_current_cart
     if session[:cart_id] == params[:id].to_i
       @cart = Cart.find(params[:id])
     else

@@ -1,6 +1,6 @@
 class LineItemsController < ApplicationController
   include CurrentCart
-  before_action :set_cart, only: %i[create]
+  before_action :set_cart, only: %i[create update]
   before_action :set_line_item, only: %i[show edit update destroy]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_line_item
 
@@ -35,10 +35,15 @@ class LineItemsController < ApplicationController
   end
 
   def update
+    @line_item.update_quantity(params[:quantity_action])
+
     respond_to do |format|
       if @line_item.update(line_item_params)
+        return destroy if @line_item.quantity < 1
+
         format.html { redirect_to @line_item, notice: "Line item was successfully updated." }
         format.json { render :show, status: :ok, location: @line_item }
+        format.js
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @line_item.errors, status: :unprocessable_entity }
@@ -49,9 +54,7 @@ class LineItemsController < ApplicationController
   def destroy
     @line_item.destroy
     respond_to do |format|
-      format.html { redirect_to store_index_url } # ,
-      #   notice: "Item was successfully removed from your cart."
-      # }
+      format.html { redirect_to store_index_url }
       format.json { head :no_content }
     end
   end
@@ -68,6 +71,6 @@ class LineItemsController < ApplicationController
   end
 
   def line_item_params
-    params.require(:line_item).permit(:product_id)
+    params.fetch(:line_item, {}).permit(:product_id, :quantity_action)
   end
 end
