@@ -1,9 +1,9 @@
 class LineItem < ApplicationRecord
   belongs_to :product
-  belongs_to :cart
+  belongs_to :order, optional: true
+  belongs_to :cart, optional: true
 
-  validates :quantity,
-            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :quantity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   def total_price
     price.to_f * quantity

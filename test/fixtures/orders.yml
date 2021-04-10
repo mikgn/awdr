@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: John Smith
+  address: 123 John Street
+  email: john_smith@test.com
+  pay_type: Check
+
+two:
+  name: Mary Green
+  address: 456 Mary Street
+  email: mary_green@test.com
+  pay_type: 1

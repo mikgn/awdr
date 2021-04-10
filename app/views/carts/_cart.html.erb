@@ -9,8 +9,11 @@
       </tr>
     </tfoot>
   </table>
-  <%= button_to 'Empty cart', @cart, class: 'empty-cart-btn',
+<!--   <%= button_to 'Empty cart', @cart, class: 'empty-cart-btn',
                                      method: :delete,
                                      remote: true,
-                                     data: { confirm: 'Are you sure?' } %>
+                                     data: { confirm: 'Are you sure?' } %> -->
+
+  <%= button_to 'Checkout', new_order_path, class: "checkout",
+                                            method: :get %>
 </article>
