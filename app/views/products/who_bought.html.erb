@@ -1,0 +1,42 @@
+<div class="feed">
+  <div class="title">Who bought <%= @product.title %></div>
+  <div class="updated">Last update: <%= @latest_order.try(:updated_at) %></div>
+  <div class="products">
+    <% @product.orders.each do |order| %>
+      <div class="order-tile"> Order: #<%= order.id %> </div>
+      <div class="shipped-to"> Shipped to <%= order.address %> </div>
+      <table style="width:100%">
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Total Price</th>
+        </tr>
+        <% order.line_items.each do |item| %>
+        <tr>
+          <td> <%= item.product.title %> </td>
+          <td style="padding-left: 20px;"> <%= item.quantity %> </td>
+          <td style="padding-left: 20px;"> <%= number_to_currency(item.total_price) %> </td>
+        </tr>
+        <% end %>
+      </table>
+      <br>
+      <div class="total_price">
+        Order price: <%= number_to_currency(order.line_items.map(&:total_price).sum) %>
+      </div>
+      <div class="paid-by">
+        Paid by: <%= order.pay_type %>
+      </div>
+      <div class="order-name">
+        Name: <%= order.name %>
+      </div>
+      <div class="order-address">
+        Address: <%= order.address %>
+      </div>
+      <div class="order-email">
+        Email: <%= order.email %>
+      </div>
+      <hr>
+      <br>
+    <% end %>
+  </div>
+</div>
