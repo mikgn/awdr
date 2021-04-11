@@ -11,3 +11,15 @@ import "channels"
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+// hide checkout button by checking out
+document.addEventListener("DOMContentLoaded", function(event) {
+  let form  = document.getElementsByClassName('order-form').length > 0;
+  let button = document.getElementsByClassName("checkout-btn").item(0);
+
+  if (form) {
+    button.hidden = true;
+  } else {
+    button.hidden = false;
+  };
+});
