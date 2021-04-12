@@ -41,7 +41,7 @@ class LineItemsController < ApplicationController
       if @line_item.update(line_item_params)
         return destroy if @line_item.quantity < 1
 
-        format.html { redirect_to @line_item, notice: "Line item was successfully updated." }
+        format.html { redirect_to store_index_url }
         format.json { render :show, status: :ok, location: @line_item }
         format.js
       else
