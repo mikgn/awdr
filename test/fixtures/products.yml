@@ -25,3 +25,9 @@ macbook:
                Two Thunderbolt USB 4 ports
   image_url: macbbok.jpg
   price: 49.50
+
+fake_macbook:
+  title: Makbook Super Pro
+  description: Best Laptop
+  image_url: makbbok.jpg
+  price: 9.50

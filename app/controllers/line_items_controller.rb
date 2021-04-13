@@ -36,11 +36,10 @@ class LineItemsController < ApplicationController
 
   def update
     @line_item.update_quantity(params[:quantity_action])
+    return destroy if @line_item.quantity < 1
 
     respond_to do |format|
       if @line_item.update(line_item_params)
-        return destroy if @line_item.quantity < 1
-
         format.html { redirect_to store_index_url }
         format.json { render :show, status: :ok, location: @line_item }
         format.js
