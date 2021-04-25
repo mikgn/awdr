@@ -8,11 +8,11 @@ class CartsTest < ApplicationSystemTestCase
   test 'add product to card' do
     visit store_index_url
 
-    assert_no_selector '#cart'
+    assert_no_selector 'h2', text: 'Your Cart'
 
-    click_on 'Add to Cart',  match: :first
+    click_on 'Add to Cart', match: :first
 
-    assert_selector '#cart'
+    assert_selector 'h2', text: 'Your Cart'
   end
 
   test "visiting the index" do

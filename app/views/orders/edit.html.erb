@@ -1,6 +1,56 @@
-<h1>Editing Order</h1>
+<h1>Set Shipping Date and Time </h1>
 
-<%= render 'form', order: @order %>
-
+<%= form_with(model: @order, local: true, html: { class: "order-form" }) do |form| %>
+  <% if @order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
+      <ul>
+        <% @order.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <p>
+      Name: <%= @order.name %>
+    </p>
+  </div>
+  <div class="field">
+    <p>
+      Address: <%= @order.address %>
+    </p>
+  </div>
+  <div class="field">
+    <p>
+      Email: <%= @order.email %>
+    </p>
+  </div>
+  <div class="field">
+    <p>
+      Pay type: <%= @order.pay_type %>
+    </p>
+  </div>
+  <div class="field">
+    <p>
+      Status: <span class="red"><%= @order.status %></span>
+    </p>
+  </div>
+  <div class="field">
+    <% if @order.status == 'Paid' %>
+      <div class="field">
+        <%= form.label :ship_date %>
+        <%= form.datetime_field :ship_date %>
+      </div>
+    <% else %>
+      <div class="field red">
+        <p>The order #<%= @order.id %> cannot be shipped because it has not yet been paid</p>
+      </div>
+    <% end %>
+  </div>
+  <div class="actions">
+    <%= form.submit 'Submit' %>
+  </div>
+<% end %>
 <%= link_to 'Show', @order %> |
 <%= link_to 'Back', orders_path %>

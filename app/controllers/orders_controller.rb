@@ -4,20 +4,17 @@ class OrdersController < ApplicationController
   before_action :ensure_cart_isnt_empty, only: :new
   before_action :set_order, only: %i[show edit update destroy]
 
-
   def index
     @orders = Order.all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @order = Order.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @order = Order.new(order_params)
@@ -25,10 +22,10 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        Cart.find(session[:cart_id]).destroy
-        session[:cart_id] = nil
+        destroy_cart
+        ChargeOrderJob.perform_later(@order, pay_type_params.to_h)
 
-        format.html { redirect_to store_index_url, notice: 'Thank you for your order!'}
+        format.html { redirect_to store_index_url, notice: 'Thank you for your order!' }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,6 +37,8 @@ class OrdersController < ApplicationController
   def update
     respond_to do |format|
       if @order.update(order_params)
+        ship_order(@order)
+
         format.html { redirect_to @order, notice: "Order was successfully updated." }
         format.json { render :show, status: :ok, location: @order }
       else
@@ -59,6 +58,11 @@ class OrdersController < ApplicationController
 
   private
 
+  def destroy_cart
+    Cart.find(session[:cart_id]).destroy
+    session[:cart_id] = nil
+  end
+
   def ensure_cart_isnt_empty
     return if @cart.line_items.any?
     redirect_to store_index_url, notice: 'Your cart is empty'
@@ -68,16 +72,22 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
   end
 
+  def ship_order(order)
+    return unless order.status == 'Paid' && order.ship_date.present?
+    ShipOrderJob.perform_later(order)
+  end
+
   def order_params
-    params.require(:order).permit(:name, :address, :email, :pay_type)
+    params.require(:order).permit(:name, :address, :email, :pay_type, :ship_date)
   end
 
   def pay_type_params
-    if order_params[:pay_type] == "Credit card"
+    case order_params[:pay_type]
+    when 'Credit card'
       params.require(:order).permit(:credit_card_number, :expiration_date)
-    elsif order_params[:pay_type] == "Check"
+    when 'Check'
       params.require(:order).permit(:routing_number, :account_number)
-    elsif order_params[:pay_type] == "Purchase order"
+    when 'Purchase order'
       params.require(:order).permit(:po_number)
     else
       {}

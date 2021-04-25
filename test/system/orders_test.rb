@@ -1,14 +1,49 @@
 require "application_system_test_case"
 
 class OrdersTest < ApplicationSystemTestCase
+  include ActiveJob::TestHelper
+
   setup do
     @order = orders(:one)
   end
 
-  test "visiting the index" do
-    visit orders_url
-    assert_selector "h1", text: "Orders"
+  test 'check routing number' do
+    LineItem.delete_all
+    Order.delete_all
+
+    visit store_index_url
+
+    assert_selector '#order_routing_number'
+
+    fill_in 'Routing #', with: '123456'
+    fill_in 'Account#', with: '987654'
+
+    perform_enqueued_jobs do
+      click_button 'Place Order'
+    end
+
+    orders = Order.all
+    assert_equal 1, orders.size
+
+    order = orders.first
+
+    assert_equal 'John Smith', order.name
+    assert_equal '123 John Street', order.address
+    assert_equal 'john_smith@test.com', order.email
+    assert_equal 'Check', order.pay_type
+    assert_equal 1, order.line_items.size
+
+    mail = ActionMailer::Base.deliveries.last
+
+    assert_equal ['john_smith@test.com'], mail.to
+    assert_equal 'store@depot.com', mail[:from].value
+    assert_equal 'Macbook Pro M1', mail.subject
   end
+
+  # test "visiting the index" do
+  #   visit orders_url
+  #   assert_selector "h1", text: "Orders"
+  # end
 
   # test "creating a Order" do
   #   visit orders_url

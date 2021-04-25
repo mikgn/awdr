@@ -1,3 +1,5 @@
+require 'envio'
+
 class Order < ApplicationRecord
   enum pay_type: {
     'Check' => 0,
@@ -5,11 +7,16 @@ class Order < ApplicationRecord
     'Purchase order' => 2
   }
 
+  enum status: {
+    'Unpaid' => 0,
+    'Paid' => 1,
+    'Shipped' => 2
+  }
+
   has_many :line_items, dependent: :destroy
 
   validates :name, :address, :email, presence: true
   validates :pay_type, inclusion: pay_types.keys
-
 
   def add_line_items_from_cart(cart)
     cart.line_items.each do |item|

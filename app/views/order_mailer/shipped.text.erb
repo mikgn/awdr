@@ -1,0 +1,3 @@
+Depot Order #<%= @order.id %> Shipped
+This is just to let you know that we've shipped your recent order:
+<%= render partial: 'line_items/mail_line_item', collection: @order.line_items, as: :line_item, formats: :html %>
