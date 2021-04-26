@@ -44,7 +44,7 @@ class ChargeOrderService
       order.update(status: 1)
       OrderMailer.received(order).deliver_later
     else
-      OrderMailer.payment_failed(order, payment_result.error).deliver_later
+      OrderMailer.payment_failed(order).deliver_later
     end
   end
 end

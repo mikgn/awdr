@@ -7,9 +7,8 @@ class OrderMailer < ApplicationMailer
     mail to: order.email, subject: 'Depot Store Order Confirmation'
   end
 
-  def payment_failed(order, error)
+  def payment_failed(order)
     @order = order
-    @error = error
 
     mail to: order.email, subject: 'Payment failed'
   end
