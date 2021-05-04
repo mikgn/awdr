@@ -3,6 +3,7 @@ require "application_system_test_case"
 class UsersTest < ApplicationSystemTestCase
   setup do
     @user = users(:one)
+    setup
   end
 
   test "visiting the index" do
@@ -28,8 +29,9 @@ class UsersTest < ApplicationSystemTestCase
     click_on "Edit", match: :first
 
     fill_in "Name", with: @user.name
-    fill_in "Password", with: 'secret'
-    fill_in "Password confirmation", with: 'secret'
+    fill_in "Current Password", with: 'secret'
+    fill_in "Password", with: 'secret2'
+    fill_in "Password confirmation", with: 'secret2'
     click_on "Update User"
 
     assert_text "User was successfully updated"

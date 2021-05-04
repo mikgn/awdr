@@ -18,7 +18,7 @@ module AuthenticationHelpers
       visit login_url
       fill_in :name, with: user.name
       fill_in :password, with: 'secret'
-      click_on 'Login'
+      click_on 'Log in'
     else
       post login_url,
            params: {

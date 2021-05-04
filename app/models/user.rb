@@ -5,8 +5,7 @@ class User < ApplicationRecord
 
   after_destroy :ensure_an_admin_remains
 
-  class Error < StandardError
-  end
+  class Error < StandardError; end
 
   private
 

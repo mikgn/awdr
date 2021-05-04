@@ -44,8 +44,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     params: {
       user: {
         name: @user.name,
-        password: 'secret',
-        password_confirmation: 'secret'
+        current_password: 'secret',
+        password: 'secret2',
+        password_confirmation: 'secret2'
       }
     }
     assert_redirected_to users_url
